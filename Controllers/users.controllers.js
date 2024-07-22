@@ -21,7 +21,7 @@ const Signup = async (req, res) => {
     const newUser = new Users(req.body);
     const userData = await newUser.save();
 
-    const token = await newUser.generateToken();
+    const token = await userData.generateToken();
 
     res
       .status(200)

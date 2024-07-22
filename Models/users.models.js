@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -27,7 +27,7 @@ const userSchema = new Schema({
   address: { type: [Address], default: [] },
 });
 
-userSchema.pre("save", async (next) => {
+userSchema.pre("save", async function (next) {
   let user = this;
   if (!user.isModified("password")) {
     return next();
