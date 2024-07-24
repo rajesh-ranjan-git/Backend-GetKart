@@ -1,4 +1,5 @@
 import Users from "../Models/users.models.js";
+import bcrypt from "bcrypt";
 
 let cookieOptions = {
   httpOnly: true,
@@ -42,7 +43,11 @@ const Login = async (req, res) => {
         .send({ result: false, message: "User does not exist..." });
     }
 
-    const passwordCheckResult = await existingUser.comparePassword(password);
+    // const passwordCheckResult = await existingUser.comparePassword(password);
+    const passwordCheckResult = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
 
     if (passwordCheckResult) {
       const token = await existingUser.generateToken();
