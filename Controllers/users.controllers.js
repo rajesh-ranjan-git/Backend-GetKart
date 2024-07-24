@@ -8,7 +8,6 @@ let cookieOptions = {
 
 const Signup = async (req, res) => {
   const { email } = req.body;
-
   try {
     const existingUser = await Users.findOne({ email: email });
 
@@ -35,7 +34,7 @@ const Signup = async (req, res) => {
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = new Users.findOne({ email: email });
+    const existingUser = Users.findOne({ email: email });
 
     if (!existingUser) {
       return res
@@ -45,7 +44,7 @@ const Login = async (req, res) => {
 
     const passwordCheckResult = await existingUser.comparePassword(password);
 
-    if (passwordCheckResult === true) {
+    if (passwordCheckResult) {
       const token = await existingUser.generateToken();
       return res
         .status(201)

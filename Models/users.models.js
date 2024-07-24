@@ -44,11 +44,11 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.methods.comparePassword = async (password) => {
+userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateToken = () => {
+userSchema.methods.generateToken = function () {
   let token = jwt.sign(
     { id: this._id, email: this.email },
     process.env.PRIVATE_KEY
