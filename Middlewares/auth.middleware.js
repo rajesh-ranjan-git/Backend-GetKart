@@ -7,7 +7,7 @@ const auth = async (req, res, next) => {
     if (!token) {
       return res
         .status(401)
-        .send({ result: false, message: "Authentication failed" });
+        .send({ result: false, message: "Authentication failed..." });
     } else {
       const { id } = jwt.verify(token, process.env.PRIVATE_KEY);
       const user = await Users.findOneById(id);

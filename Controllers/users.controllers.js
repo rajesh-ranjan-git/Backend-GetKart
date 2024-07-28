@@ -1,5 +1,4 @@
 import Users from "../Models/users.models.js";
-import bcrypt from "bcrypt";
 
 let cookieOptions = {
   httpOnly: true,
@@ -61,11 +60,61 @@ const Login = async (req, res) => {
   }
 };
 
-const updateUser = (req, res) => {};
+const updateUser = async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .send({ result: true, message: "Authentication failed..." });
+  }
 
-const getUser = (req, res) => {};
+  try {
+    const { id } = req.user;
 
-const Logout = (req, res) => {};
+    const updatedData = await Users.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
+    return res.status(200).send({
+      result: true,
+      message: "Data updated successfully...",
+      data: updatedData,
+    });
+  } catch (err) {
+    return res.status(500).send({ result: false, message: err.message });
+  }
+};
+
+const getUser = (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .send({ result: true, message: "Authentication failed..." });
+  }
+
+  try {
+    return res
+      .status(200)
+      .send({ result: true, message: "User profile", data: req.user });
+  } catch (err) {
+    return res.status(500).send({ result: false, message: err.message });
+  }
+};
+
+const Logout = (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .send({ result: true, message: "Authentication failed..." });
+  }
+
+  try {
+    return res
+      .status(200)
+      .clearCookie("Token", cookieOptions)
+      .send({ result: true, message: "Logout successful..." });
+  } catch (err) {
+    return res.status(500).send({ result: false, message: err.message });
+  }
+};
 
 export { Signup, Login, updateUser, getUser, Logout };
 
