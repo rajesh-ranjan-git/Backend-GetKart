@@ -21,21 +21,19 @@ const userSchema = new Schema({
   },
   phoneNumber: {
     type: Number,
-    min: [10, "phoneNumber is too short..."],
-    max: [12, "phoneNumber is too long..."],
   },
   address: { type: [Address], default: [] },
 });
 
 userSchema.pre("save", async function (next) {
-  let user = this;
+  const user = this;
   if (!user.isModified("password")) {
     return next();
   }
 
   try {
-    let salt = await bcrypt.genSalt(10);
-    let hashedPassword = await bcrypt.hash(user.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
 
     user.password = hashedPassword;
     next();
@@ -49,7 +47,7 @@ userSchema.methods.comparePassword = async function (password) {
 };
 
 userSchema.methods.generateToken = function () {
-  let token = jwt.sign(
+  const token = jwt.sign(
     { id: this._id, email: this.email },
     process.env.PRIVATE_KEY
   );

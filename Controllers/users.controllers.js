@@ -61,16 +61,16 @@ const Login = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send({ result: true, message: "Authentication failed..." });
-  }
-
   try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .send({ result: true, message: "Authentication failed..." });
+    }
+
     const { id } = req.user;
 
-    const updatedData = await Users.findByIdAndUpdate(_id, req.body, {
+    const updatedData = await Users.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     return res.status(200).send({
@@ -84,13 +84,13 @@ const updateUser = async (req, res) => {
 };
 
 const getUser = (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send({ result: true, message: "Authentication failed..." });
-  }
-
   try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .send({ result: true, message: "Authentication failed..." });
+    }
+
     return res
       .status(200)
       .send({ result: true, message: "User profile", data: req.user });
@@ -100,13 +100,13 @@ const getUser = (req, res) => {
 };
 
 const Logout = (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send({ result: true, message: "Authentication failed..." });
-  }
-
   try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .send({ result: true, message: "Authentication failed..." });
+    }
+
     return res
       .status(200)
       .clearCookie("Token", cookieOptions)

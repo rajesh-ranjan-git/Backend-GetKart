@@ -10,12 +10,12 @@ const auth = async (req, res, next) => {
         .send({ result: false, message: "Authentication failed..." });
     } else {
       const { id } = jwt.verify(token, process.env.PRIVATE_KEY);
-      const user = await Users.findOneById(id);
+      const user = await Users.findById(id);
       req.user = user;
       next();
     }
   } catch (err) {
-    return res.status(500).send({ result: false, message: "Server Error" });
+    return res.status(500).send({ result: false, message: err.message });
   }
 };
 
