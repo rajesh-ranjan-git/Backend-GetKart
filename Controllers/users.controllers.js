@@ -35,7 +35,7 @@ const Signup = async (req, res) => {
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = Users.findOne({ email: email });
+    const existingUser = await Users.findOne({ email: email });
 
     if (!existingUser) {
       return res
@@ -43,11 +43,7 @@ const Login = async (req, res) => {
         .send({ result: false, message: "User does not exist..." });
     }
 
-    // const passwordCheckResult = await existingUser.comparePassword(password);
-    const passwordCheckResult = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
+    const passwordCheckResult = await existingUser.comparePassword(password);
 
     if (passwordCheckResult) {
       const token = await existingUser.generateToken();
