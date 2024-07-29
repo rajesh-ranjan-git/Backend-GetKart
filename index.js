@@ -12,7 +12,7 @@ let PORT = process.env.PORT || 3000;
 server.use(express.json());
 server.use(urlencoded({ extended: true }));
 server.use(cookieParser());
-server.use(cors({ origin: "http://localhost:5173", credentials: true }));
+server.use(cors({ origin: "https://get-kart.netlify.app", credentials: true }));
 
 server.use("/users", usersRouter);
 
@@ -21,7 +21,7 @@ dbConnect()
     console.log("DB connected...");
     try {
       server.listen(PORT, () => {
-        console.log(`Server is running on https://localhost:${PORT}...`);
+        console.log(`Server has started...`);
       });
     } catch (err) {
       console.log("Server Error : ", err);
